@@ -1,0 +1,89 @@
+This standalone atlas image reader can be built in one of two ways:
+
+1/ Simply type
+	make
+No survey environment is required. If your machine is little endian (e.g.
+an intel-based PC), add
+	-DSDSS_LITTLE_ENDIAN
+to CFLAGS in the Makefile, or type
+	make CCCHK="-DSDSS_LITTLE_ENDIAN"
+If you have a survey environment and have setup dervish, but still
+want the fully standalone version, you'll either have to unsetup
+dervish, or uncomment the lines
+#DERVINC =
+and
+#DERVLIB =
+in the Makefile before building read_atlas_image
+
+2/ Setup dervish, and type
+	sdssmake
+
+I'd recommend that you do a
+	make clean
+before switching between these two ways of building read_atlas_image. You may
+not strictly need to do so, but it's certainly a wise precaution.
+
+
+Then, to write object 12's 2nd colour (i.e. r)'s atlas image (found in file
+fpAtlas.fits) to file ai.fits, you'd say
+
+	read_atlas_image -c 2 fpAtlas.fits 12 ai.fits
+
+
+I don't expect that many users will actually want to use the
+read_atlas_image executable (although it is perfectly functional). The
+main use of the product will probably be to link into custom built
+executables that need to process atlas image data. I believe that the
+code should be easily reused for this purpose.
+
+If you look at the code you'll see that it actually manipulates
+a type called an ATLAS_IMAGE.  This contains a field called a
+master_mask that contains inter alia the bounding box of the atlas
+image ([rc]{min,max}) in the r band, and offsets to that band
+(d{row,col}).
+
+The standalone programmes read_mask (reads fpM files) and read_PSF
+(reads psField files) are similar; build instructions are identical.
+
+To read the z' INTERP mask from from run 1336, column 2, field 51 you'd say:
+	read_mask /u/rhl/data/1336/objcs/2/fpM-001336-z2-0051.fit 1 foo.fit
+The resulting file (foo.fit) would be a char FITS file, with a 1 in each
+pixel that was interpolated. The bitplanes are:
+
+   typedef enum {
+      S_MASK_INTERP = 0,           /* pixel's value has been interpolated */
+      S_MASK_SATUR,                /* pixel is/was saturated  */
+      S_MASK_NOTCHECKED,           /* pixel was NOT examined for an object */
+      S_MASK_OBJECT,               /* pixel is part of some object */
+      S_MASK_BRIGHTOBJECT,         /* pixel is part of bright object */
+      S_MASK_BINOBJECT,            /* pixel is part of binned object */
+      S_MASK_CATOBJECT,            /* pixel is part of a catalogued object */
+      S_MASK_SUBTRACTED,           /* model has been subtracted from pixel */
+      S_MASK_GHOST,                /* pixel is part of a ghost */
+      S_MASK_CR,                   /* pixel is part of a cosmic ray */
+      S_NMASK_TYPES                /* number of types; MUST BE LAST */
+   } S_MASKTYPE;
+
+with HDU _one_ corresponding to plane _zero_ (INTERP).  You can specify
+these HDUs by name (e.g. OBJECT) or number (4).  With the -p flag, instead
+of generating a FITS file, a description of each mask object as a set
+of convex polygons is written in ascii to the output file; the format
+should be obvious.  One caveat: the vertices of the polygons are the
+pixel indices, so the boundaries pass _through_ the edge pixels, and
+the quoted areas are not quite the areas of the polygons that include
+all of the area.
+
+The current version of this polygonal approximation code in fact generates
+exactly one polygon per photo object, the convex hull. 
+
+To reconstruct the z' PSF (i.e. the 5th HDU) at the position
+(row, col) = (500, 600) from run 1336, column 2, field 51 you'd say:
+	read_PSF psField-001336-2-0051.fit 5 500.0 600.0 foo.fit
+The desired PSF would appear as an unsigned short FITS file in foo.fit;
+the background level is set to the standard `soft bias' of 1000.
+If you want a floating image, change a line in the read_PSF.c; look for
+	/* create a float region */
+
+
+
+			Robert Lupton (rhl@astro.princeton.edu)

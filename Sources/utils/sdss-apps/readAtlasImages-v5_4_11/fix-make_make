@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Remove invariant .h files from Makefile dependency lists
+#
+for f in $@; do
+	perl -pi -e '
+		if(/^#START_DEPEND/) { $dependencies = 1; }
+		if(!$dependencies) { next; }
+		if(/^([a-zA-Z_0-9]+)\.o\s*:\s+\1\.c\s*$/) {
+			$_ = "";
+		}
+		if(/^([a-zA-Z_0-9]+)\.o\s*:\s+\$\((ASTROTOOLS|FTCL|LIBFITS|SDSSMATH|DERVISH|TCLX?)_DIR\).*\.h\s*$/){
+			$_ = "";
+		}
+	' $f
+done
+
