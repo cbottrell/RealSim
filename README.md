@@ -42,6 +42,10 @@ Find this script here: http://skyserver.sdss.org/dr7/en/help/download/sqlcl/ for
 
 We use the Simard et al (2011) quantitative morphologies catalog as a basis for the injection statistics. An SQL version of this catalog can be found at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/sdss_dr7_morph_mybkg_mydeblend_gr.sql. However, we provide a smaller file with only the necessary information with the suite package.
 
+One of the examples in Examples.ipynb (on preparing data from SKIRT datacubes) requires a SKIRT datacube as input to generate idealized gri photometry. You can find one at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/spec_G2G3_e-orbit_1_320_i0_total.fits.
+
+
+
 Runs with Python 3 only. Tested with Python 3.6.3, 3.7
 
 
