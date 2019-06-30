@@ -46,6 +46,6 @@ One of the examples in Examples.ipynb (on preparing data from SKIRT datacubes) r
 
 
 
-Runs with Python 3 only. Tested with Python 3.6.3, 3.7
+Runs with Python 3 only. Tested with Python 3.6, 3.7
 
 
