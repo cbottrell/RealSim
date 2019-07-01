@@ -1,4 +1,5 @@
-#SDSS corrected (Doi & Annis) transmission 8-8-00
+#SDSS corrected (Doi & Annis) transmission 8-8-00 !!! Last updated (year 2000)
+#http://home.fnal.gov/~annis/astrophys/filters/filters.new 
 6520.0  4.688850e-04
 6620.0  7.674960e-04
 6720.0  6.488570e-03
