@@ -1,8 +1,8 @@
 # Observational Realism
 
-This repository is for the public release of the statistical observational realism suite described in Bottrell et al (2017ab) and presented publicly in Bottrell et al (2019b). The methods are described in detail in Bottrell et al (2017a) and Bottrell et al (2019b). 
+This repository is for the public release of the statistical observational realism suite described in Bottrell et al (2017ab) and presented publicly in Bottrell et al (2019b). The methods are described in detail in Bottrell et al (2017a) and Bottrell et al (2019b). In short, the suite allows one to generate survey-realistic synthetic images of galaxies from hydrodynamical simulations of galaxy formation and evolution. Specifically, the main functionality of this version of RealSim provides inserts simulated galaxies into SDSS images in such a way that the statistics of sky brightness, resolution and crowding are matched between simulated galaxies and observed galaxies in the SDSS. 
 
-The suite accepts idealized synthetic images in calibrated AB surface brightnesses (Oke & Gunn 1983). Specifically, the input units must be AB mag/arcsec2 (for description of the AB system (see here http://www.sdss3.org/dr8/algorithms/magnitudes.php#nmgy). The standard source for each SDSS band is close to but not exactly the AB source (3631 Jy).
+The suite accepts idealized synthetic images in calibrated AB surface brightnesses (Oke & Gunn 1983). Specifically, the input units must be AB mag/arcsec2 (for description of the AB system (see here http://www.sdss3.org/dr8/algorithms/magnitudes.php#nmgy). The standard source for each SDSS band is close to but not exactly the AB source (3631 Jy). We provide a code which produces idealized synthetic images from SKIRT datacubes.
 
 For synthetic images that are not in the rest-frame, the surface brightnesses in each input image bandpass should already be dimmed by (1+z)^-5 for the target redshift. I provide a standalone code which produces idealized synthetic images in AB surface brightnesses for the SDSS bands from SKIRT spectral datacubes (Baes et al 2011, Camps & Baes 2015) covering the optical spectrum.
 
