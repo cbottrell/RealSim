@@ -28,7 +28,7 @@ def SpecToSDSS_gri(inputName,_outputName,wl_filename,sdss_cfg_path,redshift=0.05
     
     "redshift" - float: Redshift by which the input spectrum is streched and dimmed.
     
-    "airmass" - float>=0: Airmass used to determine atmospheric extinction effects on the response curves. The average value for SDSS is 1.16 over all fields. If 0, the unattenuated response curves are used (only telescope/filter/ccd). This should nominally be set to zero because calibrated images account for atmospheric extinction.
+    "airmass" - float>=0: Airmass used to determine atmospheric extinction effects on the response curves. The average value for SDSS is 1.16 over all fields. If 0, the unattenuated response curves are used (only telescope/filter/ccd). This should nominally be set to zero because calibrated images from SDSS account for atmospheric extinction.
     
     "overwrite" - boolean: Overwrite output in output location.
     
