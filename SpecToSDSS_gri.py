@@ -65,7 +65,7 @@ def SpecToSDSS_gri(inputName,_outputName,wl_filename,sdss_cfg_path,redshift=0.05
         # wavelength elements in response curve file
         filter_wl = filter_data[:,0]
         # extinction values in column 4 assume an airmass of 1.0
-        kk = -2.5*np.log10(1.0*filter_data[:,4])
+        kk = -2.5*np.log10(filter_data[:,4])
         # compute correction for each wavelength element
         correction = 10**(-0.4*(airmass*kk))
         # apply correction to unattenuated response
