@@ -14,7 +14,7 @@ Images are rebinned to the desired redshift and CCD angular scale. The image mus
 
 (2) The images can be inserted into real image fields to incorporate real skies, PSF degradation, and contamination by neighbouring sources in the field of view. The procedure is described in detail in Bottrell et al (2017a) and Bottrell et al (2019b).
 
-The suite may be modified/adapted freely. If you use my suite for your research, I would appreciate a citation to (Bottrell et al (2017a) or the public release in Bottrell et al (2019b).
+The suite may be modified/adapted freely. If you use my suite for your research, I would appreciate a citation to (Bottrell et al (2017a) and/or the public release in Bottrell et al (2019b). If you encounter a bug or would like to suggest new functionalities, please contact me and I will promptly get back to you. The `RealSim` methodology can be applied to any existing galaxy imaging survey. I envision multiple versions of this suite -- each tailored to a particular survey's data archive structure, instrumental properties, etc.
 
 ## Setting up
 
