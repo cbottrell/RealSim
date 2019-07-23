@@ -108,7 +108,7 @@ def rebin(array, dimensions=None, scale=None):
         result[J, I_] += array[j,i]*dy*(1-dx)
         result[J_, I_] += array[j,i]*(1-dx)*(1-dy)
     allowError = 0.1
-    assert (array.sum() < result.sum() * (1+allowError)) & (array.sum() >result.sum() * (1-allowError))
+    assert (abs(array.sum()) < abs(result.sum()) * (1+allowError)) & (abs(array.sum()) > abs(result.sum()) * (1-allowError))
     return result
     
 def ObsRealism(inputName,outputName,band='r',
