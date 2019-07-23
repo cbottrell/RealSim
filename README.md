@@ -18,7 +18,7 @@ The suite may be modified/adapted freely. If you use my suite for your research,
 
 ## Setting up
 
-### `Source Extractor`
+### Deblending SDSS corrected images: `Source Extractor`
 `Source Extractor` (Bertin & Arnouts 1996) must be installed (https://www.astromatic.net/software/sextractor). I am planning a fix which uses the Pythonized `Source Extractor` module, `sep` (Barbary 2016), for the next big update. This avoids several of external dependencies including configuration files and parameter files as well as the main installation. In preparation for this update, you can do: `pip install sep`. 
 
 ### Reading SDSS PSF reconstruction files: `read_psf`
