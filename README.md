@@ -40,7 +40,7 @@ Place the `Sources/sqlcl.py` file in your Python environment's site-packages dir
 Find this script here: http://skyserver.sdss.org/dr7/en/help/download/sqlcl/ for `Python 2`. Modified to `Python 3` for this pipeline by CB. 
 
 ### Basis catalogue of SDSS galaxies
-We use the Simard et al (2011) quantitative morphologies catalogue as a basis for the injection statistics. An `SQL` version of this catalog can be found at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/sdss_dr7_morph_mybkg_mydeblend_gr.sql. However, we provide a smaller file with only the necessary information with the suite package.
+We use the Simard et al (2011) quantitative morphologies catalogue as a basis for the injection statistics. A `SQL` version of this catalog can be found at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/sdss_dr7_morph_mybkg_mydeblend_gr.sql. However, we provide a smaller file with only the necessary information with the suite package.
 
 ### Running the example notebook
 One of the examples in `Examples.ipynb` (on preparing data from SKIRT datacubes) requires a SKIRT datacube as input to generate idealized gri photometry. You can find one at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/spec_G2G3_e-orbit_1_320_i0_total.fits. It is 250 MB. It should be added to the `Inputs/Datacubes/` directory to run the `Example.ipynb` notebook.
