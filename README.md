@@ -14,12 +14,14 @@ Images are rebinned to the desired redshift and CCD angular scale. The image mus
 
 (2) The images can be inserted into real image fields to incorporate real skies, PSF degradation, and contamination by neighbouring sources in the field of view. The procedure is described in detail in Bottrell et al (2017a) and Bottrell et al (2019b).
 
-The suite may be modified/adapted freely. If you use my suite for your research, I would appreciate a citation to (Bottrell et al (2017a) and/or the public release in Bottrell et al (2019b). If you encounter a bug or would like to suggest new functionalities, please contact me and I will promptly get back to you. The `RealSim` methodology can be applied to any existing galaxy imaging survey. I envision multiple versions of this suite -- each tailored to a particular survey's data archive structure, instrumental properties, etc.
+The suite may be modified/adapted freely. If you use my suite for your research, I would appreciate a citation to (Bottrell et al (2017a) and the public release in Bottrell et al (2019b). If you encounter a bug or would like to suggest new functionalities, please contact me and I will promptly get back to you. The `RealSim` methodology can be applied to any existing galaxy imaging survey. I envision multiple versions of this suite -- each tailored to a particular survey's data archive structure, instrumental properties, etc.
 
 ## Setting up
 
+### `Source Extractor`
 `Source Extractor` (Bertin & Arnouts 1996) must be installed (https://www.astromatic.net/software/sextractor). I am planning a fix which uses the Pythonized `Source Extractor` module, `sep` (Barbary 2016), for the next big update. This avoids several of external dependencies including configuration files and parameter files as well as the main installation. In preparation for this update, you can do: `pip install sep`. 
 
+### Reading SDSS PSF reconstruction files: `read_psf`
 An application which reads SDSS PSFs must also be installed. It is included in this package. Go into the `Sources/utils/sdss-apps/` directory and do:
 
     rm -rf readAtlasImages-v5_4_11
@@ -30,14 +32,17 @@ An application which reads SDSS PSFs must also be installed. It is included in t
 
 More info on this package here: https://www.sdss.org/dr12/algorithms/read_psf/
 
+### Querying the SDSS Data Archive Server (DAS): `sqlcl.py`
 Place the `Sources/sqlcl.py` file in your Python environment's site-packages directory. Remember to make it executable:
 
     chmod u+x sqlcl.py
 
 Find this script here: http://skyserver.sdss.org/dr7/en/help/download/sqlcl/ for `Python 2`. Modified to `Python 3` for this pipeline by CB. 
 
-We use the Simard et al (2011) quantitative morphologies catalog as a basis for the injection statistics. An `SQL` version of this catalog can be found at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/sdss_dr7_morph_mybkg_mydeblend_gr.sql. However, we provide a smaller file with only the necessary information with the suite package.
+### Basis catalogue of SDSS galaxies
+We use the Simard et al (2011) quantitative morphologies catalogue as a basis for the injection statistics. An `SQL` version of this catalog can be found at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/sdss_dr7_morph_mybkg_mydeblend_gr.sql. However, we provide a smaller file with only the necessary information with the suite package.
 
+### Running the example notebook
 One of the examples in `Examples.ipynb` (on preparing data from SKIRT datacubes) requires a SKIRT datacube as input to generate idealized gri photometry. You can find one at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/spec_G2G3_e-orbit_1_320_i0_total.fits. It is 250 MB. It should be added to the `Inputs/Datacubes/` directory to run the `Example.ipynb` notebook.
 
 
