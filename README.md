@@ -33,7 +33,7 @@ An application which reads SDSS PSFs must also be installed. It is included in t
 More info on this package here: https://www.sdss.org/dr12/algorithms/read_psf/
 
 ### Querying the SDSS Data Archive Server (DAS): `sqlcl.py`
-Place the `Sources/sqlcl.py` file in your Python environment's site-packages directory. Remember to make it executable:
+Place the `sqlcl.py` file in your Python environment's site-packages directory. Remember to make it executable:
 
     chmod u+x sqlcl.py
 
