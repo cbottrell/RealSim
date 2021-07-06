@@ -21,7 +21,8 @@ from astropy.utils.exceptions import AstropyWarning
 from astropy.convolution import Gaussian2DKernel
 from astropy.convolution import convolve
 from astropy.cosmology import FlatLambdaCDM
-
+import sep
+sep.set_extract_pixstack(9999999)
 
 def rebin(array, dimensions=None, scale=None):
     """
@@ -468,6 +469,43 @@ PSF blurring (real SDSS), SDSS sky from the corrected image, and
 Poisson noise added. The final image is in nanomaggies.
 '''
 
+def genSegmap(cutoutName):
+    '''Create segmenation image using the sep SExtractor module.'''
+    cutoutData = fits.getdata(cutoutName).astype(float)
+    # filter kernel
+    filter_kernel = np.loadtxt('Sources/utils/sdss-cfg/gauss_3.0_7x7.conv',skiprows=2)
+    # use std of full image as detection threshold
+    guess_rms = np.std(cutoutData)
+    # mask all sources above std for background statistics
+    mask = ((cutoutData-np.median(cutoutData))>guess_rms)
+    # https://github.com/kbarbary/sep/issues/33: convert to float
+    # bkg object which includes back() and rms() methods
+    bkg = sep.Background(cutoutData, mask=mask, bw=32, bh=32, fw=3, fh=3)
+    # run sep.extract() on image
+    objCat,segmap = sep.extract(cutoutData-bkg.back(), thresh=1.0, err=bkg.rms(), mask=None, minarea=5,
+                             filter_kernel=filter_kernel,filter_type='conv',deblend_nthresh=32,
+                             deblend_cont=0.001, clean=True,clean_param=1.0, segmentation_map=True)
+    return segmap
+
+def getInjectCoords(segmap):
+    '''Use segmentation image to find injection coordinates.
+    There is a 10% boundary from the cutout edges which are forbidden.
+    A pixels that is both a sky pixel and is inside the boundary is eligible.'''
+    # always square cutouts
+    nrows = segmap.shape[0]
+    ncols = segmap.shape[1]
+    # background pixels
+    bkgmap = (segmap == 0)
+    # pixels within 10% of image size from either side
+    bordermap = np.zeros(segmap.shape)
+    bordermap[int(0.1*nrows):int(0.9*nrows),int(0.1*ncols):int(0.9*ncols)]=1
+    # map of possible injection sites
+    segmap = bordermap*bkgmap
+    # index of injection site for map
+    index = np.random.choice(int(np.sum(segmap)))
+    # coordinates of injection site 
+    return np.argwhere(segmap)[index]
+
 # get run,rerun,camcol,field,column,row from database data
 def rrcf_radec(field_info):
     from astropy.wcs import WCS
@@ -484,33 +522,12 @@ def rrcf_radec(field_info):
         corr_url+='{}.gz'.format(corr_image_name)
         os.system('wget {}'.format(corr_url))
         os.system('gunzip {}'.format(corr_image_name))
-    corr_mask_name = corr_image_name.replace('.fit','_mask.fit')
-    # configuration path (SEx params, gim2d files, etc.)
-    sdss_cfg_path = 'Sources/utils/sdss-cfg/'
-    # run SExtractor to produce mask
-    sexcmd = ['sex {} -c {}sdss.sex'.format(corr_image_name,sdss_cfg_path),
-              '-CHECKIMAGE_NAME {}'.format(corr_mask_name)]
-    os.system(' '.join(sexcmd))
-    # get info from mask header
-    mask_header = fits.getheader(corr_mask_name)
-    mask_nx = mask_header['NAXIS1'] # xels
-    mask_ny = mask_header['NAXIS2'] # yels
-    mask_data = fits.getdata(corr_mask_name)
-    # define an initial pixel location by row,col
-    colc = np.random.randint(low=int(0.1*mask_nx),high=int(0.9*mask_nx))
-    rowc = np.random.randint(low=int(0.1*mask_ny),high=int(0.9*mask_ny))
-    # iterate until the pixel location does not overlap with existing source
-    while mask_data[rowc,colc]!=0:
-        colc = np.random.randint(low=int(0.1*mask_nx),high=int(0.9*mask_nx))
-        rowc = np.random.randint(low=int(0.1*mask_ny),high=int(0.9*mask_ny))
+    mask_data = genSegmap(corr_image_name)
+    colc,rowc = getInjectCoords(mask_data)
     # get wcs mapping
     w = WCS(corr_image_name)
     # determine ra,dec to prevent image registration offsets in each band
     ra,dec = w.all_pix2world(colc,rowc,1,ra_dec_order=True)
-    # clean up working directory
-    if os.access(corr_image_name,0):os.remove(corr_image_name)
-    if os.access(corr_mask_name,0):os.remove(corr_mask_name)
-    if os.access('test.cat',0):os.remove('test.cat')
     return run,rerun,camcol,field,ra,dec
 
 def make_sdss_args(field_info):
