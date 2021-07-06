@@ -415,6 +415,8 @@ def ObsRealism(inputName,outputName,band='r',
                 corr_y = int(rowc - ny/2 + yy)
                 if corr_x>=0 and corr_x<=corr_nx-1 and corr_y>=0 and corr_y<=corr_ny-1:
                     img_nanomaggies[yy,xx]+=corr_image_data[corr_y,corr_x]
+                else:
+                    img_nanomaggies[yy,xx]==0.
         if os.access(corr_image_name,0):os.remove(corr_image_name)
         
         # add field info to image header
