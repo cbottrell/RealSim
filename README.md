@@ -46,6 +46,6 @@ We use the Simard et al (2011) quantitative morphologies catalogue as a basis fo
 One of the examples in `Examples.ipynb` (on preparing data from SKIRT datacubes) requires a SKIRT datacube as input to generate idealized gri photometry. You can find one at my website here: http://orca.phys.uvic.ca/~cbottrell/share/Realism/spec_G2G3_e-orbit_1_320_i0_total.fits. It is 250 MB. It should be added to the `Inputs/Datacubes/` directory to run the `Example.ipynb` notebook.
 
 
-`RealSim` operates with `Python 3` only. It is tested with versions `3.6` and `3.7`.
+`RealSim` operates with `Python 3` only. It is tested with versions `3.6`-`3.8`.
 
 
