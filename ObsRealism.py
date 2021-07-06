@@ -24,6 +24,8 @@ from astropy.cosmology import FlatLambdaCDM
 import sep
 sep.set_extract_pixstack(9999999)
 
+realsim_dir = os.path.dirname(os.path.abspath(__file__))
+
 def rebin(array, dimensions=None, scale=None):
     """
     Return the array 'array' to the new 'dimensions'
@@ -381,7 +383,7 @@ def ObsRealism(inputName,outputName,band='r',
             os.system('wget {}'.format(psf_url))
             psf_ext = {'u':1,'g':2,'r':3,'i':4,'z':5}
             psfname = 'sdss_psf.fit'
-            os.system('Sources/utils/sdss-apps/readAtlasImages-v5_4_11/read_PSF {} {} {} {} {}'.format(psf_image_name,psf_ext[band],rowc,colc,psfname))
+            os.system('{}/Sources/utils/sdss-apps/readAtlasImages-v5_4_11/read_PSF {} {} {} {} {}'.format(realsim_dir,psf_image_name,psf_ext[band],rowc,colc,psfname))
             if os.access(psf_image_name,0): os.remove(psf_image_name)
             # remove softbias from PSF 
             psfdata = fits.getdata(psfname).astype(float)-1000.
@@ -473,7 +475,7 @@ def genSegmap(cutoutName):
     '''Create segmenation image using the sep SExtractor module.'''
     cutoutData = fits.getdata(cutoutName).astype(float)
     # filter kernel
-    filter_kernel = np.loadtxt('Sources/utils/sdss-cfg/gauss_3.0_7x7.conv',skiprows=2)
+    filter_kernel = np.loadtxt(f'{realsim_dir}/Sources/utils/sdss-cfg/gauss_3.0_7x7.conv',skiprows=2)
     # use std of full image as detection threshold
     guess_rms = np.std(cutoutData)
     # mask all sources above std for background statistics
