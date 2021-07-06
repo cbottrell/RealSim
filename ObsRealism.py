@@ -525,7 +525,7 @@ def rrcf_radec(field_info):
         os.system('wget {}'.format(corr_url))
         os.system('gunzip {}'.format(corr_image_name))
     mask_data = genSegmap(corr_image_name)
-    colc,rowc = getInjectCoords(mask_data)
+    rowc,colc = getInjectCoords(mask_data)
     # get wcs mapping
     w = WCS(corr_image_name)
     # determine ra,dec to prevent image registration offsets in each band
